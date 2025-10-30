@@ -34,6 +34,29 @@ app.get("/", (req, res) => {
 async function run() {
     try {
         await client.connect();
+
+        const usersDB = client.db("UsersDB");
+        const usersCollection = usersDB.collection("users")
+
+        // data base related all API's here
+
+        app.post("/users", async(req, res) => {
+            // res.send("Hitting the db api")
+            console.log('Hitting the users post api');
+
+            const newUser = req.body;
+            console.log("User Info ",newUser);
+
+            const result = await usersCollection.insertOne(newUser)
+
+            res.send(result)
+            
+            
+        })
+
+
+
+
         await client.db('admin').command({ ping: 1 });
         console.log('Pinged your deployment. You successfully connected to MongoDB!');
         
